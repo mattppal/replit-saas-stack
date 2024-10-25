@@ -16,26 +16,26 @@ export default function SignUp() {
   const handleSignUp = async (e: React.FormEvent) => {
     e.preventDefault()
     try {
-      const { data, error } = await signUp.email({ 
-        email, 
-        password, 
-        name, 
-      }, { 
+      const { data, error } = await signUp.email({
+        email,
+        password,
+        name,
+      }, {
         onRequest: () => {
           console.log('Sign-up request started');
-        }, 
+        },
         onSuccess: () => {
           console.log('Sign-up successful');
           router.push('/dashboard')
-        }, 
-        onError: (ctx) => { 
+        },
+        onError: (ctx) => {
           console.error('Sign-up error:', ctx.error);
           setError(ctx.error.message)
-        }, 
+        },
       })
       if (error) {
         console.error('Sign-up error:', error);
-        setError(error.message)
+        setError(error.message ?? 'An unknown error occurred')
       } else if (data) {
         console.log('Sign-up successful, redirecting...');
         router.push('/dashboard')

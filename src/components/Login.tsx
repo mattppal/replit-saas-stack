@@ -14,29 +14,23 @@ export default function Login() {
 
   const handleLogin = async (e: React.FormEvent) => {
     e.preventDefault()
+    setError('')
     try {
-      const { data, error } = await signIn.email({ 
+      console.log('Attempting login with:', { email });
+      const result = await signIn.email({ 
         email, 
-        password, 
-      }, { 
-        onRequest: () => {
-          console.log('Login request started');
-        }, 
-        onSuccess: () => {
-          console.log('Login successful');
-          router.push('/dashboard')
-        }, 
-        onError: (ctx) => { 
-          console.error('Login error:', ctx.error);
-          setError(ctx.error.message)
-        }, 
+        password,
       })
-      if (error) {
-        console.error('Login error:', error);
-        setError(error.message)
-      } else if (data) {
-        console.log('Login successful, redirecting...');
+      
+      console.log('Login response:', result);
+      
+      if (result.error) {
+        setError(result.error.message || 'An error occurred during login')
+      } else if (result.data) {
+        console.log('Login successful, redirecting to dashboard');
         router.push('/dashboard')
+      } else {
+        setError('No data or error returned from login attempt')
       }
     } catch (err) {
       console.error('Unexpected error during login:', err);

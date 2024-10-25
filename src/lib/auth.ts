@@ -21,7 +21,18 @@ export const auth = betterAuth({
     socialProviders: {
         // Add your social providers here if needed
     },
-    onError: (error) => {
+    onError: (error: Error) => {
         console.error('Better Auth Error:', error);
+        console.error('Database URL:', process.env.DATABASE_URL); // Add this line
+    }
+});
+
+// Add this section to test the database connection
+pool.connect((err, client, release) => {
+    if (err) {
+        console.error('Error connecting to the database:', err);
+    } else {
+        console.log('Successfully connected to the database');
+        release();
     }
 });
