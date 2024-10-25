@@ -4,5 +4,5 @@ export const authClient = createAuthClient({
     baseURL: process.env.BETTER_AUTH_URL
 })
 
-// You can also export specific methods if you prefer:
-export const { signIn, signUp, useSession } = authClient;
+// Export specific methods
+export const { signIn, signUp, useSession, signOut } = authClient;

@@ -19,10 +19,9 @@ export const auth = betterAuth({
         enabled: true
     },
     socialProviders: {
-        // Add your social providers here, for example:
-        // github: { 
-        //   clientId: process.env.GITHUB_CLIENT_ID, 
-        //   clientSecret: process.env.GITHUB_CLIENT_SECRET, 
-        // } 
+        // Add your social providers here if needed
     },
+    onError: (error) => {
+        console.error('Better Auth Error:', error);
+    }
 });
