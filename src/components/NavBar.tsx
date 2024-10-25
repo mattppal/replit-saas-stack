@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button"
 import { useSession, signOut } from '@/lib/auth-client'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import { Avatar, AvatarFallback } from "@/components/ui/avatar"
 import {
   DropdownMenu,
@@ -10,12 +11,13 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
-import { User, Settings, LogOut } from 'lucide-react'
+import { Settings, LogOut } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
 export default function NavBar() {
   const session = useSession()
   const [isClient, setIsClient] = useState(false)
+  const router = useRouter()
 
   useEffect(() => {
     setIsClient(true)
@@ -24,7 +26,7 @@ export default function NavBar() {
 
   const handleSignOut = async () => {
     await signOut()
-    // You might want to redirect the user after signing out
+    router.push('/')
   }
 
   const renderAvatar = () => {
@@ -63,11 +65,7 @@ export default function NavBar() {
                       {renderAvatar()}
                     </DropdownMenuTrigger>
                     <DropdownMenuContent align="end">
-                      <DropdownMenuItem>
-                        <User className="mr-2 h-4 w-4" />
-                        <span>Profile</span>
-                      </DropdownMenuItem>
-                      <DropdownMenuItem>
+                      <DropdownMenuItem onClick={() => router.push('/settings')}>
                         <Settings className="mr-2 h-4 w-4" />
                         <span>Settings</span>
                       </DropdownMenuItem>
