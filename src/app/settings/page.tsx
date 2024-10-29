@@ -1,73 +1,189 @@
 'use client'
 
-import { useState } from 'react'
-import { useSession, signOut } from '@/lib/auth-client'
-import { useRouter } from 'next/navigation'
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card"
+import { useState } from "react"
+import { useRouter } from "next/navigation"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useSession, updateUser, changePassword, changeEmail, deleteAccount } from "@/lib/auth-client"
 
-export default function Settings() {
-  const session = useSession()
+export default function SettingsPage() {
   const router = useRouter()
-  const [email, setEmail] = useState(session.data?.user.email || '')
+  const { data: session } = useSession()
+  const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
+  const [success, setSuccess] = useState<string | null>(null)
+  
+  // Profile states
+  const [name, setName] = useState(session?.user.name || '')
+  const [email, setEmail] = useState(session?.user.email || '')
+  
+  // Password states
+  const [currentPassword, setCurrentPassword] = useState('')
+  const [newPassword, setNewPassword] = useState('')
 
-  const handleEmailChange = async (e: React.FormEvent) => {
+  const handleProfileUpdate = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Implement email change logic here
-    console.log('Email change requested:', email)
+    setError(null)
+    setSuccess(null)
+    setIsLoading(true)
+
+    try {
+      // Update name
+      await updateUser({
+        name,
+      })
+
+      // Update email if changed
+      if (email !== session?.user.email) {
+        await changeEmail({
+          newEmail: email,
+          callbackURL: '/settings'
+        })
+      }
+
+      setSuccess('Profile updated successfully')
+    } catch (err: any) {
+      setError(err.message || 'Failed to update profile')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  const handleDeleteAccount = async () => {
-    // Implement account deletion logic here
-    console.log('Account deletion requested')
-    await signOut()
-    router.push('/')
+  const handlePasswordChange = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+    setSuccess(null)
+    setIsLoading(true)
+
+    try {
+      await changePassword({
+        currentPassword,
+        newPassword,
+        revokeOtherSessions: true
+      })
+      setSuccess('Password updated successfully')
+      setCurrentPassword('')
+      setNewPassword('')
+    } catch (err: any) {
+      setError(err.message || 'Failed to update password')
+    } finally {
+      setIsLoading(false)
+    }
   }
 
-  if (session.status === 'loading') {
-    return <div>Loading...</div>
-  }
+  const handleAccountDeletion = async () => {
+    if (!window.confirm('Are you sure you want to delete your account? This action cannot be undone.')) {
+      return
+    }
 
-  if (session.status === 'unauthenticated') {
-    router.push('/login')
-    return null
+    setIsLoading(true)
+    try {
+      await deleteAccount()
+      router.push('/login')
+    } catch (err: any) {
+      setError(err.message || 'Failed to delete account')
+      setIsLoading(false)
+    }
   }
 
   return (
-    <div className="container mx-auto mt-10 px-4">
-      <h1 className="text-3xl font-bold mb-8">User Settings</h1>
-      
-      <Card className="mb-8">
-        <CardHeader>
-          <CardTitle>Change Email</CardTitle>
-          <CardDescription>Update your email address</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleEmailChange}>
-            <div className="grid w-full items-center gap-4">
-              <div className="flex flex-col space-y-1.5">
-                <Label htmlFor="email">Email</Label>
-                <Input id="email" value={email} onChange={(e) => setEmail(e.target.value)} />
-              </div>
-            </div>
-          </form>
-        </CardContent>
-        <CardFooter>
-          <Button onClick={handleEmailChange}>Save Changes</Button>
-        </CardFooter>
-      </Card>
+    <div className="max-w-2xl mx-auto p-8">
+      <h1 className="text-2xl font-bold mb-8">Account Settings</h1>
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Delete Account</CardTitle>
-          <CardDescription>Permanently delete your account and all associated data</CardDescription>
-        </CardHeader>
-        <CardFooter>
-          <Button variant="destructive" onClick={handleDeleteAccount}>Delete Account</Button>
-        </CardFooter>
-      </Card>
+      <div className="space-y-8">
+        {/* Profile Section */}
+        <form onSubmit={handleProfileUpdate} className="space-y-4">
+          <h2 className="text-xl font-semibold">Profile Information</h2>
+          
+          <div className="space-y-2">
+            <Label htmlFor="name">Name</Label>
+            <Input
+              id="name"
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="email">Email</Label>
+            <Input
+              id="email"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+            />
+            {email !== session?.user.email && (
+              <p className="text-sm text-muted-foreground">
+                You'll need to verify your new email address
+              </p>
+            )}
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Updating...' : 'Update Profile'}
+          </Button>
+        </form>
+
+        {/* Password Section */}
+        <form onSubmit={handlePasswordChange} className="space-y-4">
+          <h2 className="text-xl font-semibold">Change Password</h2>
+
+          <div className="space-y-2">
+            <Label htmlFor="currentPassword">Current Password</Label>
+            <Input
+              id="currentPassword"
+              type="password"
+              value={currentPassword}
+              onChange={(e) => setCurrentPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="newPassword">New Password</Label>
+            <Input
+              id="newPassword"
+              type="password"
+              value={newPassword}
+              onChange={(e) => setNewPassword(e.target.value)}
+              required
+            />
+          </div>
+
+          <Button
+            type="submit"
+            className="w-full"
+            disabled={isLoading}
+          >
+            {isLoading ? 'Updating...' : 'Update Password'}
+          </Button>
+        </form>
+
+        {/* Status Messages */}
+        {error && (
+          <div className="text-red-500 text-sm">{error}</div>
+        )}
+        {success && (
+          <div className="text-green-500 text-sm">{success}</div>
+        )}
+
+        {/* Delete Account Section */}
+        <div className="pt-8 border-t">
+          <h2 className="text-xl font-semibold text-red-600 mb-4">Danger Zone</h2>
+          <Button
+            variant="destructive"
+            onClick={handleAccountDeletion}
+            disabled={isLoading}
+          >
+            Delete Account
+          </Button>
+        </div>
+      </div>
     </div>
   )
 }

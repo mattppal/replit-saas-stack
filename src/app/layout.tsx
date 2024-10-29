@@ -1,27 +1,14 @@
-import type { Metadata } from "next";
-import localFont from "next/font/local";
-import "./globals.css";
-import { Inter } from 'next/font/google'
-import NavBar from '@/components/NavBar'
-import Footer from '@/components/Footer'
+import { GeistSans } from 'geist/font'
+import { GeistMono } from 'geist/font/mono'
+import { ThemeProvider } from "@/components/theme-provider"
+import { Navbar } from "@/components/layout/navbar"
+import { FooterSection } from "@/components/layout/sections/footer"
+import "./globals.css"
 
-const geistSans = localFont({
-  src: "./fonts/GeistVF.woff",
-  variable: "--font-geist-sans",
-  weight: "100 900",
-});
-const geistMono = localFont({
-  src: "./fonts/GeistMonoVF.woff",
-  variable: "--font-geist-mono",
-  weight: "100 900",
-});
-
-const inter = Inter({ subsets: ['latin'] })
-
-export const metadata: Metadata = {
-  title: "Your Startup Name",
-  description: "Description of your startup",
-};
+export const metadata = {
+  title: 'Your new app Landing Page',
+  description: 'A beautiful landing page built with Your new app UI',
+}
 
 export default function RootLayout({
   children,
@@ -29,14 +16,21 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en">
-      <body className={`${geistSans.variable} ${geistMono.variable} antialiased ${inter.className} flex flex-col min-h-screen`}>
-        <NavBar />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+    <html lang="en" suppressHydrationWarning>
+      <body className={`${GeistSans.variable} ${GeistMono.variable} font-sans antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <div className="flex min-h-screen flex-col">
+            <Navbar />
+            <main className="flex-1">{children}</main>
+            <FooterSection />
+          </div>
+        </ThemeProvider>
       </body>
     </html>
-  );
+  )
 }

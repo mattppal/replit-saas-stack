@@ -1,45 +1,27 @@
-import Link from 'next/link'
+import Link from "next/link"
 
-export default function Footer() {
+export function Footer() {
   return (
-    <footer className="bg-gray-900 text-white py-12">
-      <div className="container mx-auto px-4">
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Company</h3>
-            <ul className="space-y-2">
-              <li><Link href="/about">About Us</Link></li>
-              <li><Link href="/careers">Careers</Link></li>
-              <li><Link href="/contact">Contact</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Product</h3>
-            <ul className="space-y-2">
-              <li><Link href="/features">Features</Link></li>
-              <li><Link href="/pricing">Pricing</Link></li>
-              <li><Link href="/faq">FAQ</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Resources</h3>
-            <ul className="space-y-2">
-              <li><Link href="/blog">Blog</Link></li>
-              <li><Link href="/docs">Documentation</Link></li>
-              <li><Link href="/support">Support</Link></li>
-            </ul>
-          </div>
-          <div>
-            <h3 className="text-lg font-semibold mb-4">Legal</h3>
-            <ul className="space-y-2">
-              <li><Link href="/privacy">Privacy Policy</Link></li>
-              <li><Link href="/terms">Terms of Service</Link></li>
-              <li><Link href="/cookies">Cookie Policy</Link></li>
-            </ul>
-          </div>
-        </div>
-        <div className="mt-8 pt-8 border-t border-gray-800 text-center">
-          <p>&copy; 2023 Your Company Name. All rights reserved.</p>
+    <footer className="border-t">
+      <div className="container flex flex-col items-center justify-between gap-4 py-10 md:h-24 md:flex-row md:py-0">
+        <div className="flex flex-col items-center gap-4 px-8 md:flex-row md:gap-2 md:px-0">
+          <p className="text-center text-sm leading-loose md:text-left">
+            Built by{" "}
+            <Link
+              href="#"
+              className="font-medium underline underline-offset-4"
+            >
+              Your Name
+            </Link>
+            . The source code is available on{" "}
+            <Link
+              href="https://github.com/your-repo"
+              className="font-medium underline underline-offset-4"
+            >
+              GitHub
+            </Link>
+            .
+          </p>
         </div>
       </div>
     </footer>

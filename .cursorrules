@@ -1,0 +1,25 @@
+When working with this NextJS SaaS boilerplate using BetterAuth, follow these key patterns:
+
+Auth pages (src/app/(auth)/(login|signup)/page.tsx) should remain public and use client components. Keep these pages minimal, delegating most logic to their respective components.
+
+The auth API route (src/app/api/auth/[...all
+]/route.ts) must strictly follow the BetterAuth pattern, using the toNextJsHandler utility to handle authentication endpoints.
+
+Protected pages under src/app/(protected)/ must implement proper session checks and client-side redirects. Always include:
+- 'use client' directive
+- useSession hook for auth state
+- useRouter for navigation
+- useEffect for redirect logic
+
+Auth components (Login/SignUp) in src/components/ must handle the authentication flow client-side. Required elements:
+- 'use client' directive
+- useState for form management
+- useRouter for post-auth navigation
+- authClient for authentication operations
+
+Keep auth configuration split between:
+- src/lib/auth.ts for server-side configuration
+- src/lib/auth-client.ts for client-side utilities
+
+Follow these patterns strictly to maintain security and consistency across the application.
+

@@ -1,13 +1,27 @@
-import Hero from '@/components/Hero'
-import Features from '@/components/Features'
-import CTA from '@/components/CTA'
+import { BenefitsSection } from "@/components/layout/sections/benefits"
+import { CommunitySection } from "@/components/layout/sections/community"
+import { ContactSection } from "@/components/layout/sections/contact"
+import { FAQSection } from "@/components/layout/sections/faq"
+import { FeaturesSection } from "@/components/layout/sections/features"
+import { HeroSection } from "@/components/layout/sections/hero"
+import { PricingSection } from "@/components/layout/sections/pricing"
+import { ServicesSection } from "@/components/layout/sections/services"
+import { SponsorsSection } from "@/components/layout/sections/sponsors"
+import { TeamSection } from "@/components/layout/sections/team"
+import { TestimonialSection } from "@/components/layout/sections/testimonial"
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
-      <Hero />
-      <Features />
-      <CTA />
-    </main>
+    <div className="flex flex-col min-h-screen">
+      <HeroSection />
+      {/* <SponsorsSection /> */}
+      {/* <BenefitsSection /> */}
+      <FeaturesSection />
+      <TestimonialSection />
+      <TeamSection />
+      <PricingSection />
+      <ContactSection />
+      <FAQSection />
+    </div>
   )
 }

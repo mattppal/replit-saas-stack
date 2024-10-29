@@ -1,48 +1,31 @@
 'use client'
 
 import { Button } from "@/components/ui/button"
-import { motion } from "framer-motion"
+import Link from 'next/link'
 
 export default function Hero() {
   return (
-    <section className="py-24 px-6 bg-gradient-to-r from-primary-600 to-primary-800 text-white overflow-hidden">
-      <div className="container mx-auto max-w-6xl">
-        <div className="flex flex-col md:flex-row items-center">
-          <div className="md:w-1/2 mb-12 md:mb-0">
-            <motion.h1 
-              className="text-5xl font-bold mb-6 leading-tight"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8 }}
-            >
-              Revolutionize Your Business with Our Solutions
-            </motion.h1>
-            <motion.p 
-              className="text-xl mb-8 text-primary-100"
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-            >
-              Empower your team with cutting-edge tools designed for the modern workplace.
-            </motion.p>
-            <motion.div
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, delay: 0.4 }}
-            >
-              <Button size="lg" variant="secondary" className="bg-white text-primary-800 hover:bg-primary-100">Get Started</Button>
-            </motion.div>
-          </div>
-          <motion.div 
-            className="md:w-1/2"
-            initial={{ opacity: 0, x: 20 }}
-            animate={{ opacity: 1, x: 0 }}
-            transition={{ duration: 0.8, delay: 0.6 }}
-          >
-            <img src="/hero-image.svg" alt="Hero illustration" className="w-full" />
-          </motion.div>
+    <div className="bg-black text-white">
+      <div className="container mx-auto px-4 py-24 flex flex-col items-center text-center">
+        <h1 className="text-5xl md:text-6xl font-bold mb-6 bg-gradient-to-r from-white to-gray-400 text-transparent bg-clip-text">
+          Your complete platform for the web
+        </h1>
+        <p className="text-xl md:text-2xl mb-10 max-w-2xl text-gray-400">
+          Build, deploy, and scale modern web applications with unmatched speed and reliability.
+        </p>
+        <div className="flex space-x-4">
+          <Link href="/signup">
+            <Button size="lg" className="bg-white text-black hover:bg-gray-200">
+              Start Building
+            </Button>
+          </Link>
+          <Link href="/docs">
+            <Button size="lg" variant="outline" className="text-white border-white hover:bg-white hover:text-black">
+              View Documentation
+            </Button>
+          </Link>
         </div>
       </div>
-    </section>
+    </div>
   )
 }

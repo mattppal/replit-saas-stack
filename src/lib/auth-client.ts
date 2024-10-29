@@ -1,8 +1,20 @@
-import { createAuthClient } from "better-auth/react"
+import { createAuthClient } from "better-auth/react";
+import { betterFetch } from "@better-fetch/fetch";
 
 export const authClient = createAuthClient({
-    baseURL: process.env.BETTER_AUTH_URL
-})
+  baseURL: process.env.NEXT_PUBLIC_APP_URL,
+  fetch: betterFetch
+});
 
-// Export specific methods
-export const { signIn, signUp, useSession, signOut } = authClient;
+// Export convenience methods
+export const {
+  useSession,
+  signIn,
+  signUp,
+  signOut,
+  updateUser,
+  changePassword,
+  changeEmail,
+  setPassword,
+  deleteAccount
+} = authClient;
