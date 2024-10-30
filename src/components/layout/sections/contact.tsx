@@ -36,6 +36,16 @@ const formSchema = z.object({
   message: z.string(),
 });
 
+const contactDetails = {
+  address: "1001 E Hillsdale Blvd, Suite 4, Foster City, CA 94404",
+  phone: "+1 (650) 555-0123",
+  email: "contact@company.com",
+  hours: {
+    days: "Monday - Friday",
+    time: "9AM - 5PM PST"
+  }
+};
+
 export const ContactSection = () => {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -80,7 +90,7 @@ export const ContactSection = () => {
                 <div className="font-bold">Find us</div>
               </div>
 
-              <div>742 Evergreen Terrace, Springfield, IL 62704</div>
+              <div>{contactDetails.address}</div>
             </div>
 
             <div>
@@ -89,7 +99,7 @@ export const ContactSection = () => {
                 <div className="font-bold">Call us</div>
               </div>
 
-              <div>+1 (619) 123-4567</div>
+              <div>{contactDetails.phone}</div>
             </div>
 
             <div>
@@ -98,7 +108,7 @@ export const ContactSection = () => {
                 <div className="font-bold">Mail US</div>
               </div>
 
-              <div>leomirandadev@gmail.com</div>
+              <div>{contactDetails.email}</div>
             </div>
 
             <div>
@@ -108,8 +118,8 @@ export const ContactSection = () => {
               </div>
 
               <div>
-                <div>Monday - Friday</div>
-                <div>8AM - 4PM</div>
+                <div>{contactDetails.hours.days}</div>
+                <div>{contactDetails.hours.time}</div>
               </div>
             </div>
           </div>

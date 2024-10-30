@@ -86,58 +86,68 @@ export const PricingSection = ({
   onFreeTrialStart
 }: PricingSectionProps) => {
   return (
-    <section id="pricing" className="container py-24 sm:py-32">
-      <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
-        Pricing
-      </h2>
-
-      <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-        Get unlimited access
-      </h2>
+    <section className="container mx-auto px-4 py-16 sm:px-6 lg:px-8">
+      <div className="text-center space-y-4 mb-12">
+        <h2 className="text-base font-semibold leading-7 text-primary">
+          Pricing
+        </h2>
+        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+          Get unlimited access
+        </h1>
+        <p className="text-xl text-muted-foreground">
+          Choose the plan that works best for you
+        </p>
+      </div>
 
       {error && (
-        <div className="max-w-md mx-auto mb-8 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+        <div className="max-w-md mx-auto -mt-4 mb-12 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
           {error}
         </div>
       )}
 
-      <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-4">
+      <div className="grid lg:grid-cols-3 gap-8 max-w-7xl mx-auto">
         {plans(onPremiumSubscribe, onFreeTrialStart, loading).map(
           ({ title, popular, price, description, buttonText, benefitList, onClickHandler }) => (
             <Card
               key={title}
               className={
-                popular === PopularPlan?.YES
-                  ? "drop-shadow-xl shadow-black/10 dark:shadow-white/10 border-[1.5px] border-primary lg:scale-[1.1]"
-                  : ""
+                popular === PopularPlan.YES
+                  ? "relative ring-2 ring-primary lg:scale-105"
+                  : "relative"
               }
             >
-              <CardHeader>
-                <CardTitle className="pb-2">{title}</CardTitle>
-                <CardDescription className="pb-4">
+              {popular === PopularPlan.YES && (
+                <div className="absolute -top-5 left-0 right-0 mx-auto w-32 rounded-full bg-primary px-3 py-1 text-sm font-semibold text-primary-foreground text-center">
+                  Most Popular
+                </div>
+              )}
+              <CardHeader className="space-y-2">
+                <CardTitle className="text-2xl font-bold">{title}</CardTitle>
+                <CardDescription className="text-sm">
                   {description}
                 </CardDescription>
-                <div>
-                  <span className="text-3xl font-bold">${price}</span>
-                  <span className="text-muted-foreground"> /month</span>
+                <div className="pt-3">
+                  <span className="text-4xl font-bold">${price}</span>
+                  <span className="text-muted-foreground ml-2">/month</span>
                 </div>
               </CardHeader>
 
-              <CardContent className="flex">
-                <div className="space-y-4">
+              <CardContent>
+                <ul className="space-y-3">
                   {benefitList.map((benefit) => (
-                    <span key={benefit} className="flex">
-                      <Check className="text-primary mr-2" />
-                      <h3>{benefit}</h3>
-                    </span>
+                    <li key={benefit} className="flex items-center">
+                      <Check className="text-primary h-5 w-5 shrink-0 mr-3" />
+                      <span className="text-sm">{benefit}</span>
+                    </li>
                   ))}
-                </div>
+                </ul>
               </CardContent>
 
               <CardFooter>
                 <Button
-                  variant={popular === PopularPlan?.YES ? "default" : "secondary"}
-                  className="w-full"
+                  variant={popular === PopularPlan.YES ? "default" : "outline"}
+                  size="lg"
+                  className="w-full font-semibold"
                   onClick={onClickHandler}
                   disabled={loading}
                 >
