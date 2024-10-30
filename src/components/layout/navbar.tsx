@@ -39,7 +39,7 @@ interface FeatureProps {
 
 const routeList: RouteProps[] = [
     {
-        href: "/#pricing",
+        href: "/pricing",
         label: "Pricing",
     }, {
         href: "/#testimonials",
@@ -75,6 +75,7 @@ const featureList: FeatureProps[] = [
             "Make your lead capture form visually appealing and strategically.",
     },
 ];
+
 
 export const Navbar = () => {
     const [isOpen, setIsOpen] = React.useState(false);
@@ -115,6 +116,9 @@ export const Navbar = () => {
                 <DropdownMenuContent align="end" className="w-48">
                     <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/dashboard')}>
                         Dashboard
+                    </DropdownMenuItem>
+                    <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/dashboard/subscription')}>
+                        Subscription
                     </DropdownMenuItem>
                     <DropdownMenuItem className="cursor-pointer" onClick={() => router.push('/settings')}>
                         Settings

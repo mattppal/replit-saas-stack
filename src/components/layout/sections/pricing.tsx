@@ -21,57 +21,70 @@ interface PlanProps {
   description: string;
   buttonText: string;
   benefitList: string[];
+  onClickHandler?: () => void;
 }
 
-const plans: PlanProps[] = [
+interface PricingSectionProps {
+  loading?: boolean;
+  error?: string;
+  onPremiumSubscribe: () => void;
+  onFreeTrialStart: () => void;
+}
+
+const plans = (onPremiumSubscribe: () => void, onFreeTrialStart: () => void, loading?: boolean): PlanProps[] => [
   {
-    title: "Free",
+    title: "Free Trial",
     popular: 0,
     price: 0,
-    description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Start Free Trial",
+    description: "Try all premium features free for 30 days",
+    buttonText: loading ? "Processing..." : "Start Free Trial",
     benefitList: [
-      "1 team member",
+      "30-day free trial",
       "1 GB storage",
       "Up to 2 pages",
       "Community support",
       "AI assistance",
     ],
+    onClickHandler: onFreeTrialStart,
   },
   {
     title: "Premium",
     popular: 1,
     price: 45,
-    description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Get starterd",
+    description: "Perfect for professionals and growing teams",
+    buttonText: loading ? "Processing..." : "Subscribe Now",
     benefitList: [
-      "4 team member",
+      "4 team members",
       "8 GB storage",
       "Up to 6 pages",
       "Priority support",
       "AI assistance",
     ],
+    onClickHandler: onPremiumSubscribe,
   },
   {
     title: "Enterprise",
     popular: 0,
     price: 120,
-    description:
-      "Lorem ipsum dolor sit, amet ipsum consectetur adipisicing elit.",
-    buttonText: "Get in touch",
+    description: "For larger organizations with advanced needs",
+    buttonText: "Contact Sales",
     benefitList: [
-      "10 team member",
+      "10 team members",
       "20 GB storage",
       "Up to 10 pages",
       "Phone & email support",
       "AI assistance",
     ],
+    onClickHandler: () => window.location.href = 'mailto:sales@example.com',
   },
 ];
 
-export const PricingSection = () => {
+export const PricingSection = ({
+  loading,
+  error,
+  onPremiumSubscribe,
+  onFreeTrialStart
+}: PricingSectionProps) => {
   return (
     <section id="pricing" className="container py-24 sm:py-32">
       <h2 className="text-lg text-primary text-center mb-2 tracking-wider">
@@ -79,16 +92,18 @@ export const PricingSection = () => {
       </h2>
 
       <h2 className="text-3xl md:text-4xl text-center font-bold mb-4">
-        Get unlimitted access
+        Get unlimited access
       </h2>
 
-      <h3 className="md:w-1/2 mx-auto text-xl text-center text-muted-foreground pb-14">
-        Lorem ipsum dolor sit amet consectetur adipisicing reiciendis.
-      </h3>
+      {error && (
+        <div className="max-w-md mx-auto mb-8 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
+          {error}
+        </div>
+      )}
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-4">
-        {plans.map(
-          ({ title, popular, price, description, buttonText, benefitList }) => (
+        {plans(onPremiumSubscribe, onFreeTrialStart, loading).map(
+          ({ title, popular, price, description, buttonText, benefitList, onClickHandler }) => (
             <Card
               key={title}
               className={
@@ -99,11 +114,9 @@ export const PricingSection = () => {
             >
               <CardHeader>
                 <CardTitle className="pb-2">{title}</CardTitle>
-
                 <CardDescription className="pb-4">
                   {description}
                 </CardDescription>
-
                 <div>
                   <span className="text-3xl font-bold">${price}</span>
                   <span className="text-muted-foreground"> /month</span>
@@ -123,10 +136,10 @@ export const PricingSection = () => {
 
               <CardFooter>
                 <Button
-                  variant={
-                    popular === PopularPlan?.YES ? "default" : "secondary"
-                  }
+                  variant={popular === PopularPlan?.YES ? "default" : "secondary"}
                   className="w-full"
+                  onClick={onClickHandler}
+                  disabled={loading}
                 >
                   {buttonText}
                 </Button>

@@ -30,6 +30,7 @@
     "@radix-ui/react-separator": "^1.1.0",
     "@radix-ui/react-slot": "^1.1.0",
     "@radix-ui/react-tabs": "^1.1.1",
+    "@stripe/stripe-js": "^4.9.0",
     "@types/pg": "^8.11.10",
     "better-auth": "^0.6.2",
     "better-fetch": "^1.1.2",
@@ -51,6 +52,7 @@
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.53.1",
     "recharts": "2.13.0",
+    "stripe": "^17.3.0",
     "tailwind-merge": "^2.5.4",
     "tailwindcss-animate": "^1.0.7",
     "zod": "^3.22.4"

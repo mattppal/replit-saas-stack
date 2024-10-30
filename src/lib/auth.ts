@@ -16,5 +16,20 @@ export const auth = betterAuth({
       enabled: true,
       maxAge: 5 * 60 // Cache duration in seconds
     }
+  },
+  additionalFields: {
+    user: {
+      subscription: {
+        type: "object",
+        required: false,
+        properties: {
+          subscriptionId: { type: "string" },
+          status: { type: "string" },
+          trialEnd: { type: "number" },
+          priceId: { type: "string" },
+          customerId: { type: "string" },
+        }
+      }
+    }
   }
 })
